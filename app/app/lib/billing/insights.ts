@@ -64,24 +64,24 @@ export async function getCostInsightsForCurrentMonth(): Promise<Insight[]> {
       insights.push({
         title: 'OpenAI spend dominates',
         severity: 'warning',
-        description:
-          `OpenAI accounts for about ${(openai.cost /
-            (openai.cost + anthropic.cost)) *
-          100).toFixed(
-            1
-          )}% of your total LLM spend this month. Consider routing simpler workloads to cheaper models (e.g. GPT-4o-mini or Anthropic’s lower-cost tiers).`,
+        description: `OpenAI accounts for about ${(
+          (openai.cost / (openai.cost + anthropic.cost)) *
+          100
+        ).toFixed(
+          1
+        )}% of your total LLM spend this month. Consider routing simpler workloads to cheaper models (e.g. GPT-4o-mini or Anthropic’s lower-cost tiers).`,
       });
     }
     if (anthropic.cost > openai.cost * 1.5) {
       insights.push({
         title: 'Anthropic spend dominates',
         severity: 'warning',
-        description:
-          `Anthropic accounts for about ${(anthropic.cost /
-            (openai.cost + anthropic.cost)) *
-          100).toFixed(
-            1
-          )}% of your total LLM spend this month. Consider shifting non-critical volume to cheaper providers or models.`,
+        description: `Anthropic accounts for about ${(
+          (anthropic.cost / (openai.cost + anthropic.cost)) *
+          100
+        ).toFixed(
+          1
+        )}% of your total LLM spend this month. Consider shifting non-critical volume to cheaper providers or models.`,
       });
     }
   }

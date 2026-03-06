@@ -2,6 +2,7 @@ import { prisma } from './lib/prisma';
 import { SummaryCards } from './components/dashboard/SummaryCards';
 import { DailyCostChart } from './components/dashboard/DailyCostChart';
 import { InsightsCard } from './components/dashboard/InsightsCard';
+import { SyncButton } from './components/dashboard/SyncButton';
 import { getCostInsightsForCurrentMonth } from './lib/billing/insights';
 
 export const dynamic = 'force-dynamic';
@@ -85,22 +86,7 @@ export default async function DashboardPage() {
               Zero-friction AI FinOps dashboard for your LLM usage.
             </p>
           </div>
-          <form
-            className="inline-flex"
-            action={async () => {
-              'use server';
-              await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ?? ''}/api/sync-billing`, {
-                method: 'POST',
-              });
-            }}
-          >
-            <button
-              type="submit"
-              className="rounded-md border border-slate-700 bg-slate-900 px-3 py-1.5 text-sm font-medium text-slate-50 hover:bg-slate-800"
-            >
-              Sync current month
-            </button>
-          </form>
+          <SyncButton />
         </header>
 
         <SummaryCards
