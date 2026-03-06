@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum ProviderType {
+  OPENAI
+  ANTHROPIC
+}
+
+model Provider {
+  id        Int           @id @default(autoincrement())
+  name      String
+  slug      String        @unique
+  type      ProviderType
+
+  dailyUsages DailyUsage[]
+
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model DailyUsage {
+  id          Int        @id @default(autoincrement())
+  date        DateTime
+  providerId  Int
+  provider    Provider   @relation(fields: [providerId], references: [id])
+
+  totalInputTokens     Int     @default(0)
+  totalOutputTokens    Int     @default(0)
+  totalCacheTokens     Int     @default(0)
+
+  totalCostUsd         Float   @default(0.0)
+
+  currency             String  @default("USD")
+
+  @@unique([providerId, date])
+}
+
+model SyncRun {
+  id          Int       @id @default(autoincrement())
+  startedAt   DateTime  @default(now())
+  finishedAt  DateTime?
+  success     Boolean   @default(false)
+  source      String
+  message     String?
+}
+
